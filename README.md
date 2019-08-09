@@ -7,7 +7,7 @@ It uses only 11 different characters to write and execute code.
 The current charset used is: `$`, `(`, `)`, `#`, `!`, `{`, `}`, `<`, `\ `, `'`, `,`
 
 ```
-usage: bashfuck.sh [-h] [-t] [-b] cmd
+usage: bashfuck.sh [-h] [-v] [-t] [-b] cmd
 
 encode a bash command with charset $()#!{}<\',
 
@@ -15,8 +15,9 @@ positional arguments:
   cmd
 
 optional arguments:
-  -h, --help  show this help message and exit
-  -t, --test  test bashfuck and output result
-  -b, --bash  leaves the default bash string using [bash] chars, but avoids
-              the usage of the "!" and uses one byte less. always works.
+  -h, --help     show this help message and exit
+  -v, --verbose  print input command and bashfuck length too
+  -t, --test     test bashfuck and output result
+  -b, --bash     leaves the default bash string using [bash] chars, but avoids
+                 the usage of the "!" and uses one byte less. always works.
 ```

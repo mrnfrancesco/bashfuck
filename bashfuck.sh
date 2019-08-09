@@ -1,7 +1,7 @@
 #!/bin/bash
 
 usage(){
-    echo "usage: $0 [-h] [-t] [-b] cmd" >&2
+    echo "usage: $0 [-h] [-v] [-t] [-b] cmd" >&2
 }
 
 _help() {
@@ -11,10 +11,11 @@ _help() {
     echo "  cmd" >&2
     echo "" >&2
     echo "optional arguments:" >&2
-    echo "  -h, --help  show this help message and exit" >&2
-    echo "  -t, --test  test bashfuck and output result" >&2
-    echo "  -b, --bash  leaves the default bash string using [bash] chars, but avoids" >&2
-    echo "              the usage of \"!\" and uses one byte less. always works." >&2
+    echo "  -h, --help     show this help message and exit" >&2
+    echo "  -v, --verbose  print input command and bashfuck length too" >&2
+    echo "  -t, --test     test bashfuck and output result" >&2
+    echo "  -b, --bash     leaves the default bash string using [bash] chars, but avoids" >&2
+    echo "                 the usage of \"!\" and uses one byte less. always works." >&2
 }
 
 join_by() { local IFS="$1"; shift; echo "$*"; }
@@ -86,10 +87,12 @@ encode(){
 main(){
     TEST_MODE=0
     USE_DEFAULT_BASH_STR=0
+    VERBOSE=0
 
     while [[ "$#" -gt 0 ]]
     do
       case "$1" in
+        -v|--verbose) VERBOSE=1; shift 1;;
         -b|--bash) USE_DEFAULT_BASH_STR=1; shift 1;;
         -t|--test) TEST_MODE=1; shift 1;;
         -h|--help) usage; echo >&2; _help; exit 1;;
@@ -106,8 +109,13 @@ main(){
     fi
 
     PAYLOAD=$(encode "${CMD}" ${USE_DEFAULT_BASH_STR})
-    echo "cmd: \`${CMD}\`"
-    echo "result (${#PAYLOAD} byte): ${PAYLOAD}"
+    if [[ ${VERBOSE} -eq 1 ]]
+    then
+        echo "cmd: \`${CMD}\`"
+        echo "result (${#PAYLOAD} byte)"
+    fi
+
+    echo "${PAYLOAD}"
 
     if [[ ${TEST_MODE} -eq 1 ]]
     then
